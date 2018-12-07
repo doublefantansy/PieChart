@@ -85,7 +85,6 @@ public class MyPieChart extends View {
             canvas.drawLine(arcCenterX, arcCenterY, arcCenterX2, arcCenterY2, paint);
             paint.setTextSize(Util.spTopx(getContext(), 14));
             String text = Util.formatDouble1(pieEntry.getNumber() / sum * 100) + "%";
-//            BigDecimal bg = ;
             if (arcCenterC >= 0 && arcCenterC <= 45) {
                 canvas.drawText(text, (float) (arcCenterX2 + Util.dipTopx(getContext(), 2) * Math.cos(Math.toRadians(arcCenterC))), (float) (arcCenterY2 + Util.getTextHeight(text, paint) / 2 + Util.dipTopx(getContext(), 2) * Math.sin(Math.toRadians(arcCenterC))), paint);
             } else if (arcCenterC > 45 && arcCenterC <= 90) {
