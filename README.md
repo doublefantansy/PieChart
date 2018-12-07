@@ -5,6 +5,7 @@
 ![sample](https://github.com/doublefantansy/PieChart/blob/master/sample.png)
 
 主要用法:
+
            MyPieChart myPieChart = findViewById(R.id.pie_chart);
            final List<PieEntry> list = new ArrayList<>();
            list.add(new PieEntry("1", 2, getResources().getColor(R.color.colorPrimary)));
