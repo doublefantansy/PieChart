@@ -10,7 +10,9 @@ public class Util {
         paint.getTextBounds(text, 0, text.length(), rect);
         return rect.width();
     }
-
+    public static double formatDouble1(double d) {
+        return (double)Math.round(d*100)/100;
+    }
     public static int getTextHeight(String text, Paint paint) {
         Rect rect = new Rect();
         paint.getTextBounds(text, 0, text.length(), rect);

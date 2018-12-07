@@ -6,9 +6,12 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -44,7 +47,6 @@ public class MyPieChart extends View {
         super.onDraw(canvas);
         paint = new Paint();
         paint.setStrokeWidth(2);
-        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         float sum = 0;
         for (PieEntry pieEntry : pieEntries) {
             sum += pieEntry.getNumber();
@@ -63,9 +65,9 @@ public class MyPieChart extends View {
             }
             PieEntry pieEntry = pieEntries.get(i);
             paint.setColor(pieEntry.getColorRes());
-            pieEntry.setStartC(start % 360);
+            pieEntry.setStartC(Math.round(start) % 360);
             float sweep = pieEntry.getNumber() / sum * 360;
-            pieEntry.setEndC(sweep + start % 360);
+            pieEntry.setEndC(Math.round(start) % 360 + sweep);
             paint.setAntiAlias(true);
             RectF rectF = new RectF(centerX - realRadius, centerY - realRadius, centerX + realRadius, centerY + realRadius);
             canvas.drawArc(rectF, start, sweep, true, paint);
@@ -82,7 +84,8 @@ public class MyPieChart extends View {
             arcCenterY2 = (float) (arcCenterY + Util.dipTopx(getContext(), 8) * Math.sin(Math.toRadians(arcCenterC)));
             canvas.drawLine(arcCenterX, arcCenterY, arcCenterX2, arcCenterY2, paint);
             paint.setTextSize(Util.spTopx(getContext(), 14));
-            String text = decimalFormat.format(pieEntry.getNumber() / sum * 100) + "%";
+            String text = Util.formatDouble1(pieEntry.getNumber() / sum * 100) + "%";
+//            BigDecimal bg = ;
             if (arcCenterC >= 0 && arcCenterC <= 45) {
                 canvas.drawText(text, (float) (arcCenterX2 + Util.dipTopx(getContext(), 2) * Math.cos(Math.toRadians(arcCenterC))), (float) (arcCenterY2 + Util.getTextHeight(text, paint) / 2 + Util.dipTopx(getContext(), 2) * Math.sin(Math.toRadians(arcCenterC))), paint);
             } else if (arcCenterC > 45 && arcCenterC <= 90) {
@@ -116,20 +119,18 @@ public class MyPieChart extends View {
                 if (angle < 0) {
                     angle += 360;
                 }
-//                Log.d("ccnb", angle + "");
+                Log.d("ccnb", angle + "");
             }
             for (int i = 0; i < pieEntries.size(); i++) {
                 PieEntry pieEntry = pieEntries.get(i);
-//                Log.d("ccnb", pieEntry.getStartC() + " and " + pieEntry.getEndC());
+                Log.d("ccnb", pieEntry.getStartC() + " and " + pieEntry.getEndC());
                 if (angle > pieEntry.getStartC() && angle < pieEntry.getEndC()) {
                     pieEntry.setSelected(true);
                     clickPieEntryListener.click(pieEntry);
                 } else {
-//                    Log.d("ccnb", "in");
                     pieEntry
                             .setSelected(false);
                 }
-//                Log.d("ccnb", pieEntry.isSelected() + "");
             }
             invalidate();
 //                break;
