@@ -23,7 +23,7 @@ public class MyPieChart extends View {
     private float centerY;  //中心点 y坐标
     private float radius;    //未选中状态的半径
     private float choosedRadius; //选中状态的半径
-    private float start = 0;
+    //    private float start = 0;
     private ClickPieEntryListener clickPieEntryListener;
 
     public MyPieChart(Context context) {
@@ -45,6 +45,7 @@ public class MyPieChart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        float start = 0;
         paint = new Paint();
         paint.setStrokeWidth(2);
         float sum = 0;
@@ -65,14 +66,14 @@ public class MyPieChart extends View {
             }
             PieEntry pieEntry = pieEntries.get(i);
             paint.setColor(pieEntry.getColorRes());
-            pieEntry.setStartC(Math.round(start) % 360);
+            pieEntry.setStartC(start);
             float sweep = pieEntry.getNumber() / sum * 360;
-            pieEntry.setEndC(Math.round(start) % 360 + sweep);
+            pieEntry.setEndC(start + sweep);
             paint.setAntiAlias(true);
             RectF rectF = new RectF(centerX - realRadius, centerY - realRadius, centerX + realRadius, centerY + realRadius);
             canvas.drawArc(rectF, start, sweep, true, paint);
             paint.setColor(getResources().getColor(R.color.black));
-            float arcCenterC = (start + sweep / 2) % 360;
+            float arcCenterC = (start + sweep / 2);
             start += sweep;
             float arcCenterX = 0;
             float arcCenterY = 0;
